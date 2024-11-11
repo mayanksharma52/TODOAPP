@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request ,redirect
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 import os
@@ -33,6 +33,12 @@ def home():
 
     return render_template('index.html',allTodo=allTodo)
 
+@app.route('/delete/<int:sno>')
+def delete(sno):
+    todo=ToDo.query.filter_by(sno=sno).first()
+    db.session.delete(todo)
+    db.session.commit()
+    return redirect('/')
 
 if __name__ == '__main__':
     app.run(debug=True)
